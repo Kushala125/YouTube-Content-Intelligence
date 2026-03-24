@@ -39,9 +39,115 @@ To find the foundation of success, I migrated the data into SQL. Here, I perform
 (images/chart15.png)
 ![Funnel Analysis](images/chart15.png)
 
+Phase2 : 
+Phase 2 of the project involves a deep-dive SQL Analysis to uncover the structural blueprint of YouTube virality. By migrating processed data into an SQLite database, I authored complex relational queries to transition from simple observations to quantifiable growth models.
+## SQL Analysis
+
+The data was analyzed using SQLite to identify key drivers of video performance, engagement, and virality.
+
+---
+
+### 1. Engagement vs Views
+
+```sql
+SELECT 
+    CASE 
+        WHEN comments = 0 THEN 0
+        WHEN (likes * 1.0 / comments) > 20 THEN 1
+        ELSE 0
+    END AS high_engagement,
+
+    COUNT(*) AS total_videos,
+    AVG(views) AS avg_views
+
+FROM us_trending
+GROUP BY high_engagement;
+```
+
+This analysis shows that high-engagement videos receive significantly more views, with approximately 3x higher average views compared to low-engagement videos. This highlights engagement as a key driver of content performance.
+
+---
+
+### 2. Best Time to Post
+
+```sql
+SELECT 
+    CASE 
+        WHEN CAST(strftime('%H', publish_time) AS INTEGER) BETWEEN 6 AND 12 THEN 'morning'
+        WHEN CAST(strftime('%H', publish_time) AS INTEGER) BETWEEN 13 AND 18 THEN 'afternoon'
+        ELSE 'night'
+    END AS time_of_day,
+
+    COUNT(*) AS total_videos,
+    AVG(views) AS avg_views,
+    AVG(likes) AS avg_likes
+
+FROM us_trending
+GROUP BY time_of_day;
+```
+
+This analysis shows that videos published in the morning achieve higher average views and engagement, indicating that early publishing improves visibility and performance.
+
+---
+
+### 3. Top Videos per Category (Window Function)
+
+```sql
+WITH ranked_videos AS (
+    SELECT 
+        category_id,
+        title,
+        views,
+        ROW_NUMBER() OVER (
+            PARTITION BY category_id 
+            ORDER BY views DESC
+        ) AS rank
+    FROM us_trending
+)
+
+SELECT *
+FROM ranked_videos
+WHERE rank <= 3;
+```
+
+This query uses window functions to identify the top-performing videos within each category, demonstrating how content performance varies across different segments.
+
+---
+
+### 4. Engagement Funnel Analysis
+
+```sql
+WITH base AS (
+    SELECT 
+        views,
+        (likes * 1.0 / views + comments * 1.0 / views) AS engagement
+    FROM us_trending
+),
+
+ranked AS (
+    SELECT 
+        *,
+        NTILE(10) OVER (ORDER BY views DESC) AS decile
+    FROM base
+)
+
+SELECT 
+    COUNT(*) AS total_videos,
+    SUM(CASE WHEN views > 100000 THEN 1 ELSE 0 END) AS stage_2_views,
+    SUM(CASE WHEN engagement > 0.05 THEN 1 ELSE 0 END) AS stage_3_engaged,
+    SUM(CASE WHEN decile = 1 THEN 1 ELSE 0 END) AS stage_4_viral
+FROM ranked;
+```
+
+This funnel analysis tracks the progression from views to engagement and virality. It reveals that the largest drop-off occurs at the engagement stage, making it the key bottleneck in content success.
+
 Phase 3: The Command Center (Tableau)
 Finally, I translated these technical findings into a Visual Intelligence Dashboard. This serves as the "Command Center" for decision-makers, turning complex statistical distributions into clear, interactive charts that identify exactly when to publish and how to package content for maximum impact.
 ![Tableau Dashboard](images/tabelu.png)
+
+
+
+
 The Discovery: Business Insights
 Through this rigorous investigation, the data revealed three "Golden Rules" of the Trending page:
 
