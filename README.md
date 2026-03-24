@@ -11,36 +11,37 @@ The journey began with raw, unrefined data. Using Python, I acted as a forensic 
 1. Views Distribution (Winner-Takes-All)
 
 Most videos receive relatively low views, while a small percentage achieve extremely high visibility. This indicates a highly skewed distribution where a few viral videos dominate overall traffic on the platform.
-(images/chart1.png)
+![Views Distribution](images/chart1.png)
 
 2. Views vs Likes
 
 There is a strong positive relationship between views and likes, showing that higher reach generally leads to more engagement. However, not all high-view videos receive proportional likes, highlighting the importance of content quality.
-(images/chart3.png)
+![Views vs Likes](images/chart3.png)
 3. Category Performance
 
 Different content categories exhibit varying performance patterns. Some categories consistently generate higher views, while others achieve stronger engagement rates despite lower reach, indicating differences in audience behavior.
-(images/chart6.png)
+![Category Performance](images/chart6.png)
 
 4. Best Time to Post
 
 Video performance varies significantly based on publishing time. Certain hours consistently generate higher views, suggesting that aligning uploads with peak user activity can improve visibility and engagement.
-(images/chart8.png)
+![Best Time to Post](images/chart8.png)
 
 5. Top Channels
 
 A small number of channels contribute a large share of total views, indicating strong concentration in content performance. Established creators tend to dominate due to existing audience base and reach.
-(images/chart10.png)
+![Top Channels](images/chart10.png)
 6. Funnel Analysis (Most Important)
 
 There is a significant drop-off as users move from viewing a video to liking and commenting. While many users watch content, only a small percentage actively engage, highlighting engagement as the key bottleneck in content performance.
 Phase 2: The Structural Blueprint (SQL)
 To find the foundation of success, I migrated the data into SQL. Here, I performed a "Performance Autopsy" on thousands of videos. By using Window Functions and CTEs, I isolated the high-performers. I engineered a custom Engagement Signature—a ratio of likes-to-comments—to prove that the algorithm doesn't just want eyes; it wants a conversation.
 (images/chart15.png)
+![Funnel Analysis](images/chart15.png)
 
 Phase 3: The Command Center (Tableau)
 Finally, I translated these technical findings into a Visual Intelligence Dashboard. This serves as the "Command Center" for decision-makers, turning complex statistical distributions into clear, interactive charts that identify exactly when to publish and how to package content for maximum impact.
-
+![Tableau Dashboard](images/tabelu.png)
 The Discovery: Business Insights
 Through this rigorous investigation, the data revealed three "Golden Rules" of the Trending page:
 
