@@ -80,6 +80,8 @@ SELECT
 
 FROM us_trending
 GROUP BY time_of_day;
+
+
 📊 Insight
 
 Morning uploads achieve significantly higher views & engagement.
@@ -105,9 +107,11 @@ SELECT
 
 FROM us_trending
 GROUP BY title_length_category;
+
 📊 Insight
 Best: Medium titles (40–70 chars)
 Long titles underperform
+
 💼 Business Insight
 Titles need balance:
 Too short → lacks context
@@ -132,9 +136,11 @@ WITH ranked_videos AS (
 SELECT *
 FROM ranked_videos
 WHERE rank <= 3;
+
 📊 Insight
 Entertainment & music dominate
 Some niche content breaks through
+
 💼 Business Insight
 Viral success is category-dependent but not exclusive
 Smaller creators can still compete with the right content
@@ -162,6 +168,7 @@ JOIN category_avg c
 ON t.category_id = c.category_id
 ORDER BY performance_gap DESC
 LIMIT 15;
+
 📊 Insight
 
 A small number of videos outperform category averages by huge margins.
@@ -201,6 +208,7 @@ SELECT title, views, virality_score
 FROM scored
 ORDER BY virality_score DESC
 LIMIT 15;
+
 📊 Insight
 
 Engagement rate is a stronger predictor than raw views.
@@ -240,6 +248,8 @@ JOIN category_avg c
 ON b.category_id = c.category_id
 ORDER BY lift DESC
 LIMIT 20;
+
+
 📊 Insight
 
 Top performers are:
@@ -247,6 +257,8 @@ Top performers are:
 Emotional
 Story-driven
 Curiosity-based
+
+
 💼 Business Insight
 Psychology > production quality
 Emotional hooks drive engagement
@@ -275,6 +287,8 @@ FROM lagged
 WHERE prev_views IS NOT NULL
 ORDER BY growth ASC
 LIMIT 5;
+
+
 📊 Insight
 
 Some creators show consistent decline → content fatigue.
@@ -318,6 +332,8 @@ FROM scored
 WHERE views < 500000
 ORDER BY early_viral_score DESC
 LIMIT 10;
+
+
 📊 Insight
 
 High relative engagement + low views = early viral signal.
@@ -342,6 +358,8 @@ SELECT
     AVG(views) AS avg_views
 FROM ranked
 GROUP BY group_type;
+
+
 📊 Insight
 
 Top 10% videos generate ~28x more views.
@@ -374,6 +392,8 @@ SELECT
     SUM(CASE WHEN engagement > 0.05 THEN 1 ELSE 0 END) AS engaged,
     SUM(CASE WHEN decile = 1 THEN 1 ELSE 0 END) AS viral
 FROM ranked;
+
+
 📊 Insight
 
 Biggest drop-off happens at engagement stage.
